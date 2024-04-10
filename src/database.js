@@ -8,14 +8,25 @@ const config = require('./configs');
 // MySQL Database Connection
 const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
-    host: config.mysql.host,
+    host: config.mysql.dockerHost,
     user: config.mysql.user,
+    port: config.mysql.port,
     password: config.mysql.password,
     database: config.mysql.database,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
+console.log(pool);
+console.log("Connected to MySQL at " + config.mysql.dockerHost);
+console.log("Hey");
+pool.query('SHOW tables').then(([rows, fields]) => {
+    console.log(rows);
+}
+).catch((err) => {
+    console.error(err);
+}
+);
 
 // // MongoDB Database Connection
 // const { MongoClient } = require('mongodb');
@@ -36,7 +47,10 @@ const pool = mysql.createPool({
 
 // Mongoose ORM for for MongoDB
 
-module.exports = {
-    pool,
-    mongoDB
-}
+// module.exports = {
+//     pool,
+//     // mongoDB
+// }
+
+
+module.exports = pool;

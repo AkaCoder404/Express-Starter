@@ -9,23 +9,20 @@ const express = require('express');
 // Importing third party middleware
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const helment = require('helmet');
 const cors = require('cors');
 
+// Importing custom middleware
 const {
     accessLog,
     errorLog,
-    // cors,
-    // csrf,
-    // helmet,
-    // rateLimiter,
-    // jwt,
-    // bodyParser
 } = require('./middleware.js');
 
 const config = require('./configs');
 const app = express();
 
 // Middleware
+app.use(helment());
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: 'http://localhost:3000', credentials: true })); // Allow CORS from frontend running at localhost:3000

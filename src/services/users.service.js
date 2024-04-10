@@ -1,10 +1,37 @@
-
+const db = require('../database');
 const { demoHelper } = require('../utils/helper');
 
-const getUser = (user) => {
+const getUser = async (user) => {
     demoHelper('getUser');
-    const { username } = user;
-    return 'Getting a user';
+
+    // Without ORM
+    const results = await db.query('SELECT * FROM users WHERE username = ?', [user.username])
+        .then(([rows, fields]) => {
+            return rows;
+        })
+        .catch((err) => {
+            console.error(err);
+            return err;
+        });
+
+    return results;
+}
+
+const getAllUsers = async () => {
+    demoHelper('getAllUsers');
+
+    // Without ORM
+    const results = await db.query('SELECT * FROM users')
+        .then(([rows, fields]) => {
+            console.log(rows);
+            return rows;
+        })
+        .catch((err) => {
+            console.error(err);
+            return err;
+        });
+
+    return results;
 }
 
 const createUser = (user) => {
@@ -27,6 +54,7 @@ const deleteUser = (user) => {
 
 module.exports = {
     getUser,
+    getAllUsers,
     createUser,
     updateUser,
     deleteUser

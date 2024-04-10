@@ -10,8 +10,10 @@ module.exports = {
     port: process.env.PORT,
     mysql: {
         host: process.env.MYSQL_HOST,
-        user: process.env.MYSQL_ROOT_USER,
-        password: process.env.MYSQL_ROOT_PASSWORD,
+        dockerHost: process.env.MYSQL_DOCKER_HOST,
+        user: process.env.MYSQL_USER,
+        port: process.env.MYSQL_PORT,
+        password: process.env.MYSQL_PASSWORD,
         database: process.env.MYSQL_DATABASE,
     },
     // mongodb: {
