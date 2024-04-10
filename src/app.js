@@ -10,6 +10,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const helment = require('helmet');
+const rateLimit = require('express-rate-limit');
+// const xss = require('xss-clean'); // Not longer maintained
 const cors = require('cors');
 
 // Importing custom middleware
@@ -22,30 +24,54 @@ const config = require('./configs');
 const app = express();
 
 // Middleware
-app.use(helment());
-app.use(express.json());
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100,
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable `X-RateLimit-*` headers
+    handler: (req, res) => {
+        res.status(429).send('Too many requests from this IP, please try again after 15 minutes');
+    }
+});
+
+const corsOptions = { // Allow requests from the frontend
+    origin: 'http://localhost:3000',
+    credentials: true,
+};
+
+app.use(express.json());        // Parse incoming request with JSON payloads
+app.use(helment());             // Secure Express apps by setting various HTTP headers
+// app.use(xss());                 // Sanitize request data to prevent XSS attacks
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:3000', credentials: true })); // Allow CORS from frontend running at localhost:3000
+app.use(cors(corsOptions));
 app.use(accessLog);
 // app.use(jwt);
 
 // Routes
-const apiRoutes = require('./routes');
-app.use('/api', apiRoutes);
+const apiRoutes = require('./routes/v1/index.js');
+app.use('/api/v1', apiLimiter, apiRoutes);
 
 // Default Route
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Welcome to the app!');
 });
 
-// Default API GET Route
-app.get('/api', (req, res) => {
-    res.send('Hello API!');
+// Default V1 Route
+app.get('/api/v1', (req, res) => {
+    res.send('Welcome to V1 of the API!');
 });
 
-app.use(errorLog);
 
 // Running the express server
-app.listen(config.port, () => {
-    console.log(`Server running on port ${config.port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(process.env.PORT || config.port, () => {
+        console.log(`Server running on port ${config.port}`);
+    });
+}
+
+app.use(errorLog);
+app.use((_req, _res, next) => next(new Error('Route not found')));
+app.use(errorLog);
+
+// TODO Export app for testing?
+module.exports = app;

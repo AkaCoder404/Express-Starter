@@ -1,13 +1,8 @@
 # Express-Starter
 
-This is a starter application for an express js server to build APIs. It contains what I believe is a good app architecture should be. All suggestions are appreciated!
+This is a boilerplate/starter project for quickly building an express js server to build a RESTful APIs. It contains what I believe is a good app architecture should be. All suggestions are appreciated! Currently, it has boiler plate code for a 3 layer architecture. More can be found here about Express.js project architecture here on [飞书](https://lft4un1s0v.feishu.cn/docx/ILghd7ICiott1Yxkbbcc3BZ5nHc?from=from_copylink).
 
-Currently, it has boiler plate code for a 3 layer architecture: User -> Routes -> Controllers -> Services -> Models -> DB. 
-
-More can be found here about Express.js project architecture here on [飞书](https://lft4un1s0v.feishu.cn/docx/ILghd7ICiott1Yxkbbcc3BZ5nHc?from=from_copylink).
-
-By default, we use MySQL as the database. In this case, since we don't use an ORM, we can make calls directly in the service layer, therefore `models/` is left blank. I will address this later.
-
+By default, we use MySQL as the database. In this case, since we don't use an ORM, we can make calls directly in the service layer, therefore `models/` is left blank. 
 
 ## Running
 In order to quickly run the project. 
@@ -27,43 +22,62 @@ MYSQL_DATABASE="test"
 ```
 4. Run project using `npm run dev`. 
 
-## Background
+
+## Project Structure
+The project hiearchy is shown below
+```
+src\
+ |--config\         # Environment variables and configuration related values
+ |--controllers\    # Route controllers (controller layer)
+ |--docs\           # Swagger files
+ |--models\         # Mongoose models (data layer)
+ |--routes\         # Routes
+ |--services\       # Business logic (service layer)
+ |--utils\          # Utility classes and functions
+ |--validations\    # Request data validation schemas
+ |--app.js          # Express app entry
+ |--database.js     # Database connection
+ |--middleware.js   # Custom express middleware
+tests\              # Contain tests
+
+```
+
+## API Documentation
 This sample API has one main resource/component, which has the following paths.
 
 ```sh
 api/users/create_user   # POST request
 api/users/get_user      # GET request
+api/users/get_users     # GET request
 api/users/update_user   # PUT request
 api/users/delete_user   # DELETE request
 ```
 
-## Background
-This sample API has one main resource/component, which has the following paths.
+### Examples
+Below are some example calls.
 
+#### Get user information
 ```shell
-% curl -X GET -H "Content-Type: application/json" -d '{"username":"John Doe"}' http://localhost:8001/api/users/get_user
+% curl -X GET -H "Content-Type: application/json" -d '{"username":"John Doe"}' http://localhost:8001/api/v1/users/get_user
 ```
 
-Here is the following result
+Here is the result.
 ```json
 [{"id":1,"username":"John Doe","email":"john.doe@gmail.com","password":"password","created_at":"2024-04-09T22:09:56.000Z"}
 ```
 
-Another
+#### Get all users
 ```shell
-% curl -X GET  http://localhost:8001/api/users/get_all_users
+% curl -X GET  http://localhost:8001/api/v1/users/get_all_users
 ```
 
-with the results
+Here is the result.
 ```json
 [{"id":1,"username":"John Doe","email":"john.doe@gmail.com","password":"password","created_at":"2024-04-09T22:09:56.000Z"},{"id":2,"username":"Jane Doe","email":"jane.doe@gmail.com","password":"password","created_at":"2024-04-09T22:09:56.000Z"},{"id":3,"username":"Mike Doe","email":"mike.doe@gmail.com","password":"password","created_at":"2024-04-09T22:09:56.000Z"}]
 ```
 
-## File Hiearchy
-The project hiearchy is as described
-```
+## Middleware
 
-```
 
 ## Tips
 Here are some more tips.
@@ -73,7 +87,9 @@ Here are some more tips.
 
 ## TODO
 - AWS CloudFormation templating for easy aws deploy
-- Docker for easy database setup
 - Pub/Sub Component
 - Boilerplate for JWT Authentication
+- Versioning of APIs (using `v1/users/...`)
+- Authentication/Authorization/Validation
+- Loaders logic seperation
 

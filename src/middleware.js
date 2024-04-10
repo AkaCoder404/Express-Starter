@@ -1,5 +1,5 @@
 /**
- * @fileoverview This file is the main entry point for middleware.
+ * @fileoverview This file contains custom middleware functions.
  * 
  */
 
@@ -17,13 +17,17 @@
 // Loggers
 function accessLog(req, res, next) {
     const { hostname, method, path, ip, protocol } = req;
-    console.log(`ACCESS: ${method} ${protocol}://${hostname}${path} - ${ip}`);
+    if (process.env.NODE_ENV !== 'test') {
+        console.log(`ACCESS: ${method} ${protocol}://${hostname}${path} - ${ip}`);
+    }
     next();
 }
 
 function errorLog(err, req, res, next) {
     const { hostname, method, path, protocol } = req;
-    console.log(`ERROR: ${method} ${protocol}://${hostname}${path} - ${err}`);
+    if (process.env.NODE_ENV !== 'test') {
+        console.log(`ERROR: ${method} ${protocol}://${hostname}${path} - ${err}`);
+    }
     res.status(500).send({ status: "server-error", message: err.message });
 }
 

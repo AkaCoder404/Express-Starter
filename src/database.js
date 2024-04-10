@@ -17,16 +17,14 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     queueLimit: 0
 });
-console.log(pool);
-console.log("Connected to MySQL at " + config.mysql.dockerHost);
-console.log("Hey");
-pool.query('SHOW tables').then(([rows, fields]) => {
-    console.log(rows);
-}
-).catch((err) => {
-    console.error(err);
-}
-);
+// console.log("Connected to MySQL at " + config.mysql.dockerHost);
+// pool.query('SHOW tables').then(([rows, fields]) => {
+//     console.log(rows);
+// }
+// ).catch((err) => {
+//     console.error(err);
+// }
+// );
 
 // // MongoDB Database Connection
 // const { MongoClient } = require('mongodb');
