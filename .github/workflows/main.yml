@@ -2,7 +2,7 @@ name: Node.js CI with MySQL
 
 on:
   push:
-    branches: [main]
+    branches: [main, workflows_setup]
   pull_request:
     branches: [main]
 
@@ -15,8 +15,6 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: test
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
         ports:
           - 3306:3306
         options: >-
@@ -56,3 +54,5 @@ jobs:
           MYSQL_PASSWORD: root
           MYSQL_DB: test
           MYSQL_PORT: 3306
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXPIRES_IN: 1h
