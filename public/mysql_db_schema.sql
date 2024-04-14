@@ -11,7 +11,7 @@ CREATE TABLE users (
 );
 
 -- Insert some data
-INSERT INTO users (name, email, password) VALUES 
+INSERT INTO users (username, email, password) VALUES 
 ('John Doe', 'john.doe@gmail.com', 'password'),
 ('Jane Doe', 'jane.doe@gmail.com', 'password'),
 ('Mike Doe', 'mike.doe@gmail.com', 'password');
