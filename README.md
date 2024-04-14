@@ -47,6 +47,7 @@ This sample API has one main resource/component, which has the following paths.
 
 ```sh
 api/v1/auth/login          # POST request
+api/v1/auth/register       # POST request
 api/v1/users/create_user   # POST request
 api/v1/users/get_user      # GET request
 api/v1/users/get_users     # GET request
@@ -61,7 +62,7 @@ This boilerplate includes...
 3. JWT for Authentication
 4. Basic Unit and Integration Tests
 
-## End User Testing
+## E2E Testing
 Postmon workspace ~ in progress
 
 ## Middleware
@@ -75,7 +76,8 @@ Here are some more tips.
 ## TODO
 - AWS CloudFormation templating for easy aws deploy
 - Pub/Sub Component
-- Versioning of APIs (using `v1/users/...`)
-- Authentication/Authorization/Validation
+- Redis for Caching/Fast Memory Support
+- Authorization/Validation
+- Password hashing
 - Loaders logic seperation
 

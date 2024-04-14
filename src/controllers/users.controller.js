@@ -7,7 +7,7 @@ const users = require('../services/users.service');
 
 const getUser = async (req, res, next) => {
     try {
-        const results = await users.getUser(req.body);
+        const results = await users.getUser(req.user);
         res.send(results);
     } catch (err) {
         console.error('Error while getting user', err.message);
@@ -47,11 +47,11 @@ const updateUser = async (req, res) => {
     }
 }
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     // TODO Implement deleteUser
     try {
-        // users.updateUser
-        res.send('deleteUser');
+        const results = await users.deleteUser(req.user);
+        res.send({ message: results });
     } catch (err) {
         console.error('Error while deleting user', err.message);
         next(err);
