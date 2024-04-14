@@ -1,5 +1,7 @@
 # Express-Starter
 
+[![CI status][ci-badge]][ci-workflow]
+
 [ci-badge]: https://github.com/AkaCoder404/Express-Starter/actions/workflows/main.yml/badge.svg
 [ci-workflow]: https://github.com/AkaCoder404/Express-Starter/actions/workflows/main.yml
 
