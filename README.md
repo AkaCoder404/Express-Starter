@@ -1,5 +1,8 @@
 # Express-Starter
 
+[ci-badge]: https://github.com/AkaCoder404/Express-Starter/actions/workflows/main.yml/badge.svg
+[ci-workflow]: https://github.com/AkaCoder404/Express-Starter/actions/workflows/main.yml
+
 This is a boilerplate/starter project for quickly building an express js server to build a RESTful APIs. It contains what I believe is a good app architecture should be. All suggestions are appreciated! Currently, it has boiler plate code for a 3 layer architecture. More can be found here about Express.js project architecture here on [飞书](https://lft4un1s0v.feishu.cn/docx/ILghd7ICiott1Yxkbbcc3BZ5nHc?from=from_copylink).
 
 By default, we use MySQL as the database. In this case, since we don't use an ORM, we can make calls directly in the service layer, therefore `models/` is left blank. 
@@ -61,6 +64,8 @@ This boilerplate includes...
 2. Middleware Support
 3. JWT for Authentication
 4. Basic Unit and Integration Tests
+5. Github Workflow for CI/CD
+6. Data Safety - Password Hashing
 
 ## E2E Testing
 Postmon workspace ~ in progress
@@ -72,12 +77,10 @@ Here are some more tips.
 1. Separate config files based on purpose. `db.config.js` for database configurement, `thirdparty.config.js` for third party app configurement, etc...
 2. Understand your data layer needs, comparing data driver (handwritten SQL queries) vs ORM models to define how `models/` should be used.
 
-
 ## TODO
 - AWS CloudFormation templating for easy aws deploy
 - Pub/Sub Component
 - Redis for Caching/Fast Memory Support
 - Authorization/Validation
-- Password hashing
 - Loaders logic seperation
 

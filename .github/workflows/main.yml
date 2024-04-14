@@ -2,21 +2,21 @@ name: Node.js CI with MySQL
 
 on:
   push:
-    branches: [main]
+    branches: [main, workflows_setup]
   pull_request:
     branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: main_env
     services:
       mysql:
         image: mysql:5.7
         env:
+          MYSQL_HOST: "%"
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: test
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
         ports:
           - 3306:3306
         options: >-
@@ -46,13 +46,16 @@ jobs:
           done
 
       - name: Import SQL Schema
-        run: mysql -h 127.0.0.1 -u root -ppassword testdb < ./path/to/your/schema.sql
+        run: mysql -h 127.0.0.1 -u root -proot test < ./public/mysql_db_schema.sql
 
       - name: Run tests
         run: npm test
         env:
-          MYSQL_HOST: localhost
+          PORT: 8001
+          MYSQL_HOST: "%"
           MYSQL_USER: root
           MYSQL_PASSWORD: root
-          MYSQL_DB: test
+          MYSQL_DATABASE: test
           MYSQL_PORT: 3306
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXPIRES_IN: 1h
