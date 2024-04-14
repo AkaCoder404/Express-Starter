@@ -1,5 +1,8 @@
 # Express-Starter
 
+[ci-badge]: https://github.com/AkaCoder404/Express-Starter/actions/workflows/main.yml/badge.svg
+[ci-workflow]: https://github.com/AkaCoder404/Express-Starter/actions/workflows/main.yml
+
 This is a boilerplate/starter project for quickly building an express js server to build a RESTful APIs. It contains what I believe is a good app architecture should be. All suggestions are appreciated! Currently, it has boiler plate code for a 3 layer architecture. More can be found here about Express.js project architecture here on [飞书](https://lft4un1s0v.feishu.cn/docx/ILghd7ICiott1Yxkbbcc3BZ5nHc?from=from_copylink).
 
 By default, we use MySQL as the database. In this case, since we don't use an ORM, we can make calls directly in the service layer, therefore `models/` is left blank. 
