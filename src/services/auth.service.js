@@ -1,10 +1,21 @@
 const db = require('../database');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bycrypt');
 const config = require('../configs/');
 const { demoHelper } = require('../utils/helper');
 
 const createToken = (user) => {
     return jwt.sign({ username: user.username }, config.jwt.secret, { expiresIn: '1h' });
+}
+
+const hashPassword = async (password) => {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    return hash;
+}
+
+const verifyPassword = async (password, hash) => {
+    return await bcrypt.compare(password, hash);
 }
 
 const login = async (user) => {

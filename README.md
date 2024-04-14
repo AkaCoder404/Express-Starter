@@ -64,6 +64,7 @@ This boilerplate includes...
 2. Middleware Support
 3. JWT for Authentication
 4. Basic Unit and Integration Tests
+5. Github Workflow for CI/CD
 
 ## E2E Testing
 Postmon workspace ~ in progress
