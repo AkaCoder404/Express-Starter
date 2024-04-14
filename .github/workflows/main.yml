@@ -44,7 +44,7 @@ jobs:
           done
 
       - name: Import SQL Schema
-        run: mysql -h 127.0.0.1 -u root -ppassword test < ./pubic/mysql_db_schema.sql
+        run: mysql -h 127.0.0.1 -u root -ppassword test < ./public/mysql_db_schema.sql
 
       - name: Run tests
         run: npm test
