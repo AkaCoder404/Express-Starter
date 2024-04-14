@@ -50,10 +50,11 @@ jobs:
       - name: Run tests
         run: npm test
         env:
+          PORT: 8001
           MYSQL_HOST: "%"
           MYSQL_USER: root
           MYSQL_PASSWORD: root
-          MYSQL_DB: test
+          MYSQL_DATABASE: test
           MYSQL_PORT: 3306
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           JWT_EXPIRES_IN: 1h
