@@ -50,7 +50,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     // TODO Implement deleteUser
     try {
-        users.updateUser
+        // users.updateUser
         res.send('deleteUser');
     } catch (err) {
         console.error('Error while deleting user', err.message);

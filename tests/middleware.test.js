@@ -17,7 +17,9 @@ describe('Test Middleware', () => {
             const responses = await Promise.all(promises);
 
             // Check if any response has a 429 status code
-            const isRateLimited = responses.some(response => response.status === 429);
+            const isRateLimited = responses.some(
+                response => response.status === 429
+            );
 
             expect(isRateLimited).toBeTruthy();
         });

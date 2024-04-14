@@ -23,7 +23,7 @@ const getAllUsers = async () => {
     // Without ORM
     const results = await db.query('SELECT * FROM users')
         .then(([rows, fields]) => {
-            console.log(rows);
+            // console.log(rows);
             return rows;
         })
         .catch((err) => {

@@ -18,6 +18,7 @@ const cors = require('cors');
 const {
     accessLog,
     errorLog,
+    authenticateUser
 } = require('./middleware.js');
 
 const config = require('./configs');
@@ -45,7 +46,7 @@ app.use(helment());             // Secure Express apps by setting various HTTP h
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(accessLog);
-// app.use(jwt);
+app.use(authenticateUser);
 
 // Routes
 const apiRoutes = require('./routes/v1/index.js');

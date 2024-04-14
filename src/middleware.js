@@ -13,6 +13,8 @@
 // 7. rateLimiter
 // 8. errorLog
 
+const jwt = require('jsonwebtoken');
+const config = require('./configs');
 
 // Loggers
 function accessLog(req, res, next) {
@@ -30,6 +32,31 @@ function errorLog(err, req, res, next) {
     }
     res.status(500).send({ status: "server-error", message: err.message });
 }
+
+function authenticateUser(req, res, next) {
+    // Exclude base routes from authentication
+    exclude_paths = ['/', '/api', '/api/v1', '/api/v1/auth/login', '/api/v1/users/register'];
+    if (exclude_paths.includes(req.path)) {
+        return next();
+    }
+
+    // Get the token from the request
+    const token = req.cookies.authToken;
+    if (!token) {
+        return res.status(401).send({ status: "unauthorized", message: "Unauthorized access" });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, config.jwt.secret);
+        req.user = decoded; // Optionally attach user info to the request
+        next(); // Token is valid, proceed to the next middleware or route handler
+    } catch (error) {
+        // Token verification failed
+        return res.status(403).send({ status: "forbidden", message: "Invalid token" });
+    }
+}
+
 
 // CORS Middleware
 function cors(req, res, next) {
@@ -56,10 +83,10 @@ function rateLimiter(req, res, next) {
 }
 
 // JWT Middleware (Authentication)
-function jwt(req, res, next) {
-    // TODO Implement JWT Middleware
-    next();
-}
+// function jwt(req, res, next) {
+//     // TODO Implement JWT Middleware
+//     next();
+// }
 
 // Body Parser Middleware
 function bodyParser(req, res, next) {
@@ -71,6 +98,7 @@ function bodyParser(req, res, next) {
 module.exports = {
     accessLog,
     errorLog,
+    authenticateUser
     // cors,
     // csrf,
     // helmet,

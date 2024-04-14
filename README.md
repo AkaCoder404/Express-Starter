@@ -46,38 +46,25 @@ tests\              # Contain tests
 This sample API has one main resource/component, which has the following paths.
 
 ```sh
-api/users/create_user   # POST request
-api/users/get_user      # GET request
-api/users/get_users     # GET request
-api/users/update_user   # PUT request
-api/users/delete_user   # DELETE request
+api/v1/auth/login          # POST request
+api/v1/users/create_user   # POST request
+api/v1/users/get_user      # GET request
+api/v1/users/get_users     # GET request
+api/v1/users/update_user   # PUT request
+api/v1/users/delete_user   # DELETE request
 ```
 
-### Examples
-Below are some example calls.
+## Functionality
+This boilerplate includes...
+1. 3 Layer Architecture
+2. Middleware Support
+3. JWT for Authentication
+4. Basic Unit and Integration Tests
 
-#### Get user information
-```shell
-% curl -X GET -H "Content-Type: application/json" -d '{"username":"John Doe"}' http://localhost:8001/api/v1/users/get_user
-```
-
-Here is the result.
-```json
-[{"id":1,"username":"John Doe","email":"john.doe@gmail.com","password":"password","created_at":"2024-04-09T22:09:56.000Z"}
-```
-
-#### Get all users
-```shell
-% curl -X GET  http://localhost:8001/api/v1/users/get_all_users
-```
-
-Here is the result.
-```json
-[{"id":1,"username":"John Doe","email":"john.doe@gmail.com","password":"password","created_at":"2024-04-09T22:09:56.000Z"},{"id":2,"username":"Jane Doe","email":"jane.doe@gmail.com","password":"password","created_at":"2024-04-09T22:09:56.000Z"},{"id":3,"username":"Mike Doe","email":"mike.doe@gmail.com","password":"password","created_at":"2024-04-09T22:09:56.000Z"}]
-```
+## End User Testing
+Postmon workspace ~ in progress
 
 ## Middleware
-
 
 ## Tips
 Here are some more tips.
@@ -88,7 +75,6 @@ Here are some more tips.
 ## TODO
 - AWS CloudFormation templating for easy aws deploy
 - Pub/Sub Component
-- Boilerplate for JWT Authentication
 - Versioning of APIs (using `v1/users/...`)
 - Authentication/Authorization/Validation
 - Loaders logic seperation
