@@ -65,6 +65,7 @@ This boilerplate includes...
 3. JWT for Authentication
 4. Basic Unit and Integration Tests
 5. Github Workflow for CI/CD
+6. Data Safety - Password Hashing
 
 ## E2E Testing
 Postmon workspace ~ in progress
@@ -76,12 +77,10 @@ Here are some more tips.
 1. Separate config files based on purpose. `db.config.js` for database configurement, `thirdparty.config.js` for third party app configurement, etc...
 2. Understand your data layer needs, comparing data driver (handwritten SQL queries) vs ORM models to define how `models/` should be used.
 
-
 ## TODO
 - AWS CloudFormation templating for easy aws deploy
 - Pub/Sub Component
 - Redis for Caching/Fast Memory Support
 - Authorization/Validation
-- Password hashing
 - Loaders logic seperation
 

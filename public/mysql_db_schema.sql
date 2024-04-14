@@ -1,3 +1,6 @@
+-- Create database
+CREATE DATABASE test;
+
 -- Use test database
 USE test;
 
