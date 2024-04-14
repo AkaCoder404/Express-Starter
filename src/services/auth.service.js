@@ -1,6 +1,6 @@
 const db = require('../database');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bycrypt');
+const bcrypt = require('bcrypt');
 const config = require('../configs/');
 const { demoHelper } = require('../utils/helper');
 
@@ -33,7 +33,8 @@ const login = async (user) => {
 
     // If user exists, check password
     if (results.length > 0) {
-        if (results[0].password === user.password) {
+        const equalPass = await verifyPassword(user.password, results[0].password);
+        if (equalPass === true) {
             // Create a token
             const token = createToken(user);
             return token;
@@ -47,6 +48,9 @@ const login = async (user) => {
 
 const register = async (user) => {
     demoHelper('register');
+
+    const hashedPassword = await hashPassword(user.password);
+    user.password = hashedPassword;
 
     // Without ORM
     const results = await db.query('INSERT INTO users SET ?', user)
