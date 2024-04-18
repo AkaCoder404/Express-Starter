@@ -6,6 +6,11 @@
 // Importing the express module
 const express = require('express');
 
+const swaggerDoc = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerOptions = require('./documentation.js');
+const swaggerSpec = swaggerJsDoc(swaggerOptions);
+
 // Importing third party middleware
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -40,6 +45,21 @@ const corsOptions = { // Allow requests from the frontend
     credentials: true,
 };
 
+const helmetOptions = {
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            imgSrc: ["'self'", 'data:', 'validator.swagger.io'],
+            fontSrc: ["'self'"],
+            objectSrc: ["'none'"],
+            upgradeInsecureRequests: [],
+        },
+    },
+};
+
+
 app.use(express.json());        // Parse incoming request with JSON payloads
 app.use(helment());             // Secure Express apps by setting various HTTP headers
 // app.use(xss());                 // Sanitize request data to prevent XSS attacks
@@ -47,7 +67,6 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(accessLog);
 app.use(authenticateUser);
-
 // Routes
 const apiRoutes = require('./routes/v1/index.js');
 app.use('/api/v1', apiLimiter, apiRoutes);
@@ -62,6 +81,8 @@ app.get('/api/v1', (req, res) => {
     res.send('Welcome to V1 of the API!');
 });
 
+// Documentation
+app.use("/docs/", swaggerDoc.serve, swaggerDoc.setup(swaggerSpec, { explorer: true }));
 
 // Running the express server
 if (process.env.NODE_ENV !== 'test') {

@@ -15,6 +15,7 @@ In order to quickly run the project.
 1. Install the correct node version using `nvm use`
 2. Install packages using `npm install`
 3. Setup MySQL database server using `docker-compose --env-file .env -f docker/docker-compose.yml up -d`, create tables using `public/mysql_db_schema.sql`, and create `.env` file your DB information.
+4. Create a JWT token using `openssl rand -base64 32` or other methods.
 ```sh
 PORT=8001
 
@@ -24,13 +25,16 @@ MYSQL_PORT=3306
 MYSQL_USER="root"
 MYSQL_PASSWORD="root"
 MYSQL_DATABASE="test"
+
+JWT_SECRET="secret"
+JWT_EXPIRES_IN="1h"
 ```
-4. Run project using `npm run dev`. 
+5. Run project using `npm run dev`. 
 
 
 ## Project Structure
 The project hiearchy is shown below
-```
+```s
 src\
  |--config\         # Environment variables and configuration related values
  |--controllers\    # Route controllers (controller layer)
@@ -44,7 +48,6 @@ src\
  |--database.js     # Database connection
  |--middleware.js   # Custom express middleware
 tests\              # Contain tests
-
 ```
 
 ## API Documentation
@@ -78,6 +81,7 @@ Postmon workspace ~ in progress
 Here are some more tips.
 1. Separate config files based on purpose. `db.config.js` for database configurement, `thirdparty.config.js` for third party app configurement, etc...
 2. Understand your data layer needs, comparing data driver (handwritten SQL queries) vs ORM models to define how `models/` should be used.
+3. 
 
 ## TODO
 - AWS CloudFormation templating for easy aws deploy

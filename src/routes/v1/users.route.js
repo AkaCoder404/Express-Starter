@@ -1,6 +1,49 @@
 /**
- * @fileoverview This file contains the routes for the user API.
- * 
+ * @fileoverview This file contains the routes for the users API
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - username
+ *         - email
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the user
+ *         username:
+ *           type: string
+ *           description: The username of your book
+ *         email:
+ *           type: string
+ *           description: The email of user
+ *       example:
+ *         id: 1
+ *         username: John Doe
+ *         email: john.doe@gmail.com
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: The user API
+ * /users/get_user:
+ *   get:
+ *     summary: Get user information
+ *     tags: [User]
+ *     security:
+ *      - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: The user information.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Some server error
  */
 
 const express = require('express');

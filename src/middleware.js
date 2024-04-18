@@ -35,14 +35,21 @@ function errorLog(err, req, res, next) {
 
 function authenticateUser(req, res, next) {
     // Exclude base routes from authentication
-    exclude_paths = ['/', '/api', '/api/v1', '/api/v1/auth/login', '/api/v1/auth/register'];
+    exclude_paths = ['/', '/api', '/docs/', '/api/v1', '/api/v1/auth/login', '/api/v1/auth/register'];
     if (exclude_paths.includes(req.path)) {
+        return next();
+    }
+
+    // Exclude paths that have /docs/ in them
+    doc_paths = ['/docs/'];
+    if (doc_paths.some(path => req.path.includes(path))) {
         return next();
     }
 
     // Get the token from the request
     const token = req.cookies.authToken;
     if (!token) {
+        console.log('No token found');
         return res.status(401).send({ status: "unauthorized", message: "Unauthorized access" });
     }
 

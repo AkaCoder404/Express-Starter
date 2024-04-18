@@ -21,6 +21,8 @@ const verifyPassword = async (password, hash) => {
 const login = async (user) => {
     demoHelper('login');
 
+    console.log(user);
+
     // Without ORM
     const results = await db.query('SELECT * FROM users WHERE username = ?', [user.username])
         .then(([rows, fields]) => {
@@ -31,6 +33,12 @@ const login = async (user) => {
             return err;
         });
 
+    // if ECONNREFUSED error
+    db_errors = ['ECONNREFUSED', 'ER_ACCESS_DENIED_ERROR'];
+    if (db_errors.includes(results.code)) {
+        throw new Error('Database connection error');
+    }
+
     // If user exists, check password
     if (results.length > 0) {
         const equalPass = await verifyPassword(user.password, results[0].password);
@@ -39,7 +47,7 @@ const login = async (user) => {
             const token = createToken(user);
             return token;
         } else {
-            return 'Incorrect password';
+            throw new Error('Invalid password');
         }
     } else {
         return 'User not found';
