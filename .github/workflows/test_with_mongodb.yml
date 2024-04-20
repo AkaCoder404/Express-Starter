@@ -2,7 +2,7 @@ name: Node.js CI with MongoDB
 
 on:
   push:
-    branches: [main, workflows_setup]
+    branches: [main, mongodb_workflow]
   pull_request:
     branches: [main]
 
@@ -26,9 +26,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "14"
-
-      - name: Install MongoDB client
-        run: sudo apt-get install mongodb-clients
 
       - name: Install dependencies
         run: npm install
