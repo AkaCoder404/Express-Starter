@@ -38,7 +38,18 @@ const register = async (req, res, next) => {
     }
 }
 
+const login_cache = async (req, res, next) => {
+    try {
+        const login_count = await auth.loginCache(req.body);
+        res.status(200).send({ "message": "There has been " + login_count + " logins in the last 5 minutes" });
+    } catch (err) {
+        console.error('Error while logging in', err.message);
+        next(err);
+    }
+}
+
 module.exports = {
     login,
-    register
+    register,
+    login_cache
 }

@@ -35,7 +35,7 @@ function errorLog(err, req, res, next) {
 
 function authenticateUser(req, res, next) {
     // Exclude base routes from authentication
-    exclude_paths = ['/', '/api', '/docs/', '/api/v1', '/api/v1/auth/login', '/api/v1/auth/register'];
+    exclude_paths = ['/', '/api', '/docs/', '/api/v1', '/api/v1/auth/login', '/api/v1/auth/register', '/api/v1/auth/login_cache'];
     if (exclude_paths.includes(req.path)) {
         return next();
     }

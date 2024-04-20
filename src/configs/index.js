@@ -27,4 +27,9 @@ module.exports = {
         password: process.env.MONGO_PASSWORD,
         port: process.env.MONGO_PORT,
     },
+    redis: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT,
+        password: process.env.REDIS_PASSWORD,
+    }
 };

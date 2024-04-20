@@ -86,14 +86,25 @@
  *                  description: Register information
  *              500:
  *                  description: Some server error
+ * 
+ * /auth/login_cache:
+ *  get:
+ *     summary: Login Cache - Get the number of logins in the last 5 minutes
+ *     tags: [Auth]
+ *     responses:
+ *        200:
+ *           description: The number of logins in the last 5 minutes
+ *        500:
+ *          description: Some server error
  */
 
 const express = require('express');
-const { login, register } = require('../../controllers/auth.controller');
+const { login, register, login_cache } = require('../../controllers/auth.controller');
 
 const router = express.Router();
 
 router.post('/login', login);
 router.post('/register', register);
+router.get('/login_cache', login_cache);
 
 module.exports = router;

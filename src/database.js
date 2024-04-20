@@ -38,7 +38,21 @@ const connectDB = async () => {
 // });
 
 
-module.exports = connectDB;
+// Redis
+const redis = require('redis');
+const redisClient = redis.createClient({
+    host: config.redis.host,
+    port: config.redis.port,
+    retry_strategy: function (options) {
+        return Math.min(options.attempt * 100, 3000);
+    }
+});
+
+// Monitor Redis connection events
+redisClient.on('error', (err) => console.log('Redis Client Error', err));
+redisClient.on('connect', () => console.log('Connected to Redis'));
+
+module.exports = { connectDB, redisClient };
 
 
 // MySQL Database Connection
