@@ -1,0 +1,67 @@
+name: Node.js CI with MongoDB
+
+on:
+  push:
+    branches: [main, mongodb_workflow]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: main_env
+    services:
+      mongo_db:
+        image: mongo:latest
+        env:
+          MONGO_INITDB_DATABASE: test
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: root
+          MONGO_USER: root
+          MONGO_PASSWORD: root
+          MONGO_DATABASE: test
+        ports:
+          - "27017:27017"
+      redis:
+        image: redis:latest
+        ports:
+          - "6379:6379"
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Wait for MongoDB to start
+        run: |
+          until nc -z localhost 27017; do
+              echo "waiting for mongo..."
+              sleep 2
+          done
+
+      - name: Wait for Redis to start
+        run: |
+          until nc -z localhost 6379; do
+              echo "waiting for redis..."
+              sleep 2
+          done
+
+      - name: Run tests
+        run: npm test
+        env:
+          PORT: 8001
+          MONGO_HOST: "localhost"
+          MONGO_USER: root
+          MONGO_PASSWORD: root
+          MONGO_DATABASE: password
+          MONGO_PORT: 27017
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXPIRATION: 1h
+          REDSIS_HOST: "localhost"
+          REDIS_PORT: 6379
+          REDIS_DB: 0

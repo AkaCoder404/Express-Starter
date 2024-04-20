@@ -43,6 +43,7 @@ const redis = require('redis');
 const redisClient = redis.createClient({
     host: config.redis.host,
     port: config.redis.port,
+    database: config.redis.db,
     retry_strategy: function (options) {
         return Math.min(options.attempt * 100, 3000);
     }
@@ -50,7 +51,9 @@ const redisClient = redis.createClient({
 
 // Monitor Redis connection events
 redisClient.on('error', (err) => console.log('Redis Client Error', err));
-redisClient.on('connect', () => console.log('Connected to Redis'));
+// redisClient.on('connect', () => console.log('Connected to Redis'));
+// redisClient.on('ready', () => console.log('Redis is ready'));
+redisClient.on('end', () => console.log('Redis connection closed'));
 
 module.exports = { connectDB, redisClient };
 

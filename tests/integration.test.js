@@ -4,7 +4,7 @@
 const request = require('supertest');
 const app = require('../src/app');
 const mongoose = require('mongoose');
-const connectDB = require('../src/database');
+const { connectDB, redisClient } = require('../src/database');
 
 describe('Basic Integration Test', () => {
     describe('Register and Login', () => {
@@ -15,6 +15,7 @@ describe('Basic Integration Test', () => {
 
         afterAll(async () => {
             await mongoose.connection.close();
+            await redisClient.quit();
         });
         test('should register a new user', async () => {
             const response = await request(app)
@@ -35,6 +36,33 @@ describe('Basic Integration Test', () => {
             expect(response.statusCode).toBe(200);
             expect(response.headers['set-cookie']).toBeDefined();
             cookie = response.headers['set-cookie'];
+        });
+
+        test('login multiple times', async () => {
+            // Prior to this test, get the login_cache
+            const response_cache = await request(app)
+                .get('/api/v1/auth/login_cache')
+                .set('Cookie', cookie);
+            expect(response_cache.statusCode).toBe(200);
+            // "Message": "There has been X logins in the last 5 minutes"
+            // Parse 
+            const cache_value = parseInt(response_cache.body.message.split(' ')[3]);
+
+            for (let i = 0; i < 5; i++) {
+                const response = await request(app)
+                    .post('/api/v1/auth/login')
+                    .send({ username: 'integration_tester8', password: 'password' });
+                expect(response.statusCode).toBe(200);
+            }
+            // Check if the login_cache is working
+            const response = await request(app)
+                .get('/api/v1/auth/login_cache')
+                .set('Cookie', cookie);
+            expect(response.statusCode).toBe(200);
+
+            // Expect cache to be incremented by 5
+            const post_cache_value = parseInt(response.body.message.split(' ')[3]);
+            expect(post_cache_value).toBe(cache_value + 5);
         });
 
         test('should get user details', async () => {

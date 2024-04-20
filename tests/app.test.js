@@ -5,7 +5,7 @@
 const request = require('supertest');
 const app = require('../src/app');
 const mongoose = require('mongoose');
-const connectDB = require('../src/database');
+const { connectDB, redisClient } = require('../src/database');
 
 describe('GET /', () => {
     let server;
@@ -20,6 +20,7 @@ describe('GET /', () => {
     afterAll(async () => {
         server.close();
         await mongoose.connection.close();
+        await redisClient.quit();
     });
 
     // Define your tests here

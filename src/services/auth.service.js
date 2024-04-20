@@ -32,8 +32,9 @@ const login = async (user) => {
         const equalPass = await verifyPassword(user.password, results[0].password);
         if (equalPass === true) {
             // Redis track logins amount in the last 5 minutes
-            redisClient.incr('login_cache');
-            redisClient.expire('login_cache', 300); // 5 minutes
+            console.log("Login successful")
+            await redisClient.incr('login_cache');
+            await redisClient.expire('login_cache', 300); // 5 minutes
             // Create a token
             const token = createToken(user);
             return token;
@@ -41,7 +42,7 @@ const login = async (user) => {
             throw new Error('Invalid password');
         }
     } else {
-        return 'User not found';
+        throw new Error('User not found');
     }
 }
 

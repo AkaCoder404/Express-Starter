@@ -3,10 +3,12 @@ const httpMocks = require('node-mocks-http');
 const request = require('supertest');
 const app = require('../src/app');
 const mongoose = require('mongoose');
+const { redisClient } = require('../src/database');
 
 describe('Test Middleware', () => {
     afterAll(async () => {
         await mongoose.connection.close();
+        await redisClient.quit();
     });
 
     describe('Rate Limiter Middleware', () => {

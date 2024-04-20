@@ -6,11 +6,16 @@
 // Importing the express module
 const express = require('express');
 const mongoose = require('mongoose');
+const redis = require('redis');
 
 // Importing the database connection
 const { connectDB, redisClient } = require('./database.js');
 connectDB();
-
+redisClient.connect().then(() => {
+    console.log('Connected to Redis');
+}).catch((err) => {
+    console.log('Redis connection error', err);
+});
 
 // Importing the swagger module
 const swaggerDoc = require('swagger-ui-express');
@@ -76,18 +81,13 @@ app.use(accessLog);
 app.use(authenticateUser);
 
 // Middleware to check Redis connection
-app.use((req, res, next) => {
-    if (!redisClient || !redisClient.connected) {
-        res.status(503).send('Redis client not connected');
-        return;
-    }
-    next();
-});
-
-
-
-
-
+// app.use((req, res, next) => {
+//     if (!redisClient || !redisClient.connected) {
+//         res.status(503).send('Redis client not connected');
+//         return;
+//     }
+//     next();
+// });
 
 // Routes
 const apiRoutes = require('./routes/v1/index.js');
@@ -112,6 +112,7 @@ process.on('SIGINT', () => {
         console.log('Mongoose connection disconnected due to app termination');
         process.exit(0);
     });
+    redisClient.quit();
 });
 
 // Running the express server

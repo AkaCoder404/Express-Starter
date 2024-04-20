@@ -59,6 +59,7 @@ This sample API has one main resource/component, which has the following paths.
 ```sh
 api/v1/auth/login          # POST request
 api/v1/auth/register       # POST request
+api/v1/auth/login_cache    # GET request
 api/v1/users/create_user   # POST request
 api/v1/users/get_user      # GET request
 api/v1/users/get_users     # GET request
@@ -75,6 +76,7 @@ This boilerplate includes...
 5. Github Workflow for CI/CD
 6. Data Safety - Password Hashing
 7. API Documentation with Swagger
+8. Simple Redis Login Counter Cache
 
 ## E2E Testing
 Swagger documentation is set up at `docs`. Remember to use authorization by copying value of `authToken` from browser cookies to `Authorize` button after `/auth/login` or `/auth/register` has been called.
@@ -95,11 +97,9 @@ Here are some more tips.
 ## TODO
 - AWS CloudFormation templating for easy aws deploy
 - Pub/Sub Component
-- Redis for Caching/Fast Memory Support
 - Authorization/Validation
 - Loaders logic seperation
 - Seperate Model Logic from Controller
-- Switch to MongoDB
 
 
 
