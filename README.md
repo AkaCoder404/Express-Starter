@@ -16,17 +16,17 @@ In order to quickly run the project.
 
 1. Install the correct node version using `nvm use`
 2. Install packages using `npm install`
-3. Setup MySQL database server using `docker-compose --env-file .env -f docker/docker-compose.yml up -d`, create tables using `public/mysql_db_schema.sql`, and create `.env` file your DB information.
+3. Setup MySQL database server using `docker-compose --env-file .env -f docker/docker-compose-mongodb.yml up -d`, and create `.env` file with DB information. Example shown below
 4. Create a JWT token using `openssl rand -base64 32` or other methods.
 ```sh
 PORT=8001
 
-# MySQL
-MYSQL_HOST="localhost"
-MYSQL_PORT=3306
-MYSQL_USER="root"
-MYSQL_PASSWORD="root"
-MYSQL_DATABASE="test"
+# MongoDB
+MONGO_HOST="localhost"
+MONGO_PORT="27017"
+MONGO_USER="root"
+MONGO_PASSWORD="root"
+MONGO_DATABASE="test"
 
 JWT_SECRET="secret"
 JWT_EXPIRES_IN="1h"
@@ -42,6 +42,7 @@ src\
  |--controllers\    # Route controllers (controller layer)
  |--docs\           # Swagger files
  |--models\         # Mongoose models (data layer)
+ |--schema\         # Contains Mongoose Schemas
  |--routes\         # Routes
  |--services\       # Business logic (service layer)
  |--utils\          # Utility classes and functions
