@@ -7,9 +7,7 @@
 
 This is a boilerplate/starter project for quickly building an express js server to build a RESTful APIs. It contains what I believe is a good app architecture should be. All suggestions are appreciated! Currently, it has boiler plate code for a 3 layer architecture. More can be found here about Express.js project architecture here on [飞书](https://lft4un1s0v.feishu.cn/docx/ILghd7ICiott1Yxkbbcc3BZ5nHc?from=from_copylink).
 
-~~By default, we use MySQL as the database. In this case, since we don't use an ORM, we can make calls directly in the service layer, therefore `models/` is left blank.~~
-
-The database used is MongoDB as it seems more popular in the Express/Node.js world. But if you want to run it, checkout an older readme.md at `docs/readme_v1.md`
+By default, we use MySQL as the database. In this case, since we don't use an ORM, we can make calls directly in the service layer, therefore `models/` is left blank.
 
 ## Running
 In order to quickly run the project. 
@@ -80,25 +78,11 @@ Swagger documentation is set up at `docs`. Remember to use authorization by copy
 
 ![alt text](./public/swagger.png)
 
-## Middleware
-
-## Database
-
-
 ## Tips
 Here are some more tips.
 1. Separate config files based on purpose. `db.config.js` for database configurement, `thirdparty.config.js` for third party app configurement, etc...
 2. Understand your data layer needs, comparing data driver (handwritten SQL queries) vs ORM models to define how `models/` should be used.
 3. 
-
-## TODO
-- AWS CloudFormation templating for easy aws deploy
-- Pub/Sub Component
-- Redis for Caching/Fast Memory Support
-- Authorization/Validation
-- Loaders logic seperation
-- Seperate Model Logic from Controller
-- Switch to MongoDB
 
 
 

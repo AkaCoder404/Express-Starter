@@ -1,41 +1,29 @@
-const db = require('../database');
+// const db = require('../database');
 const { demoHelper } = require('../utils/helper');
+
+// Models
+const User = require('../models/users.model');
+
 
 const getUser = async (user) => {
     demoHelper('getUser');
-
-    // Without ORM
-    const results = await db.query('SELECT * FROM users WHERE username = ?', [user.username])
-        .then(([rows, fields]) => {
-            return rows;
-        })
-        .catch((err) => {
-            console.error(err);
-            return err;
-        });
-
-    if (results.length > 0) {
-        return results[0];
+    const result = await User.find({ username: user.username });
+    if (result.length > 0) {
+        return result[0];
     } else {
-        return { message: 'User not found' };
+        return 'User not found';
     }
+
 }
 
 const getAllUsers = async () => {
     demoHelper('getAllUsers');
 
-    // Without ORM
-    const results = await db.query('SELECT * FROM users')
-        .then(([rows, fields]) => {
-            // console.log(rows);
-            return rows;
-        })
-        .catch((err) => {
-            console.error(err);
-            return err;
-        });
-
-    return results;
+    const result = await User.find();
+    if (result.length > 0) {
+        return result;
+    }
+    return 'No users found';
 }
 
 const createUser = (user) => {
@@ -52,20 +40,12 @@ const updateUser = (user) => {
 
 const deleteUser = async (user) => {
     demoHelper('deleteUser');
-    // Without ORM
-    const results = await db.query('DELETE FROM users WHERE username = ?', [user.username])
-        .then(([rows, fields]) => {
-            return rows;
-        })
-        .catch((err) => {
-            console.error(err);
-            return err;
-        });
 
-    if (results.affectedRows > 0) {
+    const result = await User.deleteOne({ username: user.username });
+    if (result) {
         return 'User deleted';
     }
-    return 'Failed to delete a user';
+    return 'User not found';
 }
 
 module.exports = {

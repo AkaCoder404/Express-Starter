@@ -1,8 +1,12 @@
-const db = require('../database');
+// const db = require('../database');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const config = require('../configs/');
 const { demoHelper } = require('../utils/helper');
+
+// Models
+const User = require('../models/users.model');
+
 
 const createToken = (user) => {
     return jwt.sign({ username: user.username }, config.jwt.secret, { expiresIn: '1h' });
@@ -20,24 +24,7 @@ const verifyPassword = async (password, hash) => {
 
 const login = async (user) => {
     demoHelper('login');
-
-    console.log(user);
-
-    // Without ORM
-    const results = await db.query('SELECT * FROM users WHERE username = ?', [user.username])
-        .then(([rows, fields]) => {
-            return rows;
-        })
-        .catch((err) => {
-            console.error(err);
-            return err;
-        });
-
-    // if ECONNREFUSED error
-    db_errors = ['ECONNREFUSED', 'ER_ACCESS_DENIED_ERROR'];
-    if (db_errors.includes(results.code)) {
-        throw new Error('Database connection error');
-    }
+    const results = await User.find({ username: user.username });
 
     // If user exists, check password
     if (results.length > 0) {
@@ -60,23 +47,14 @@ const register = async (user) => {
     const hashedPassword = await hashPassword(user.password);
     user.password = hashedPassword;
 
-    // Without ORM
-    const results = await db.query('INSERT INTO users SET ?', user)
-        .then(([rows, fields]) => {
-            return rows;
-        })
-        .catch((err) => {
-            console.error(err);
-            return err;
-        });
+    const newUser = new User(user);
+    const results = await newUser.save();
 
-    // If register is successful, return the user
-    if (results.affectedRows > 0) {
+    if (results) {
         const token = createToken(user);
         return token;
-    } else {
-        return 'Registration failed';
     }
+    return 'Registration failed';
 }
 
 module.exports = {

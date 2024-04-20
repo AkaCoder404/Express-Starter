@@ -1,0 +1,15 @@
+# Compose file for MongoDB
+
+version: "3.1"
+
+services:
+  db:
+    image: mongo:latest
+    container_name: mongo_db_test
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - "27017:27017"

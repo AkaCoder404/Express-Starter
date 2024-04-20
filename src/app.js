@@ -5,7 +5,13 @@
 
 // Importing the express module
 const express = require('express');
+const mongoose = require('mongoose');
 
+// Importing the database connection
+const connectDB = require('./database.js');
+connectDB();
+
+// Importing the swagger module
 const swaggerDoc = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerOptions = require('./documentation.js');
@@ -83,6 +89,14 @@ app.get('/api/v1', (req, res) => {
 
 // Documentation
 app.use("/docs/", swaggerDoc.serve, swaggerDoc.setup(swaggerSpec, { explorer: true }));
+
+// Handle Process Termination
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        console.log('Mongoose connection disconnected due to app termination');
+        process.exit(0);
+    });
+});
 
 // Running the express server
 if (process.env.NODE_ENV !== 'test') {

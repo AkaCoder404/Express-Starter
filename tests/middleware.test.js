@@ -2,8 +2,13 @@ const httpStatus = require('http-status');
 const httpMocks = require('node-mocks-http');
 const request = require('supertest');
 const app = require('../src/app');
+const mongoose = require('mongoose');
 
 describe('Test Middleware', () => {
+    afterAll(async () => {
+        await mongoose.connection.close();
+    });
+
     describe('Rate Limiter Middleware', () => {
         test('should limit requests', async () => {
             const promises = [];

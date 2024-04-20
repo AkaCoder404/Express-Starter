@@ -3,14 +3,23 @@
 // Example using Supertest and Jest
 const request = require('supertest');
 const app = require('../src/app');
+const mongoose = require('mongoose');
+const connectDB = require('../src/database');
 
 describe('Basic Integration Test', () => {
     describe('Register and Login', () => {
         var cookie;
+        beforeAll(async () => {
+            await connectDB();
+        });
+
+        afterAll(async () => {
+            await mongoose.connection.close();
+        });
         test('should register a new user', async () => {
             const response = await request(app)
                 .post('/api/v1/auth/register')
-                .send({ username: 'temp', password: 'password', 'email': 'temp@temp.com' });
+                .send({ username: 'integration_tester8', password: 'password', 'email': 'integration_tester8@test.com' });
             expect(response.statusCode).toBe(201);
         });
 
@@ -22,7 +31,7 @@ describe('Basic Integration Test', () => {
         test('should login a user and get token', async () => {
             const response = await request(app)
                 .post('/api/v1/auth/login')
-                .send({ username: 'temp', password: 'password' });
+                .send({ username: 'integration_tester8', password: 'password' });
             expect(response.statusCode).toBe(200);
             expect(response.headers['set-cookie']).toBeDefined();
             cookie = response.headers['set-cookie'];
@@ -33,8 +42,7 @@ describe('Basic Integration Test', () => {
                 .get('/api/v1/users/get_user')
                 .set('Cookie', cookie);
             expect(response.statusCode).toBe(200);
-            expect(response.body.username).toBe('temp');
-            console.log(response.body);
+            expect(response.body.username).toBe('integration_tester8');
         });
 
         test('Should return error to /api/v1/does_not_exist', async () => {

@@ -3,19 +3,23 @@
  * 
  */
 const request = require('supertest');
-const app = require('../src/app'); // Adjust this path to your app's entry point
+const app = require('../src/app');
+const mongoose = require('mongoose');
+const connectDB = require('../src/database');
 
 describe('GET /', () => {
     let server;
 
     // Start the server before any tests run
-    beforeAll(done => {
-        server = app.listen(4000, done);
+    beforeAll(async () => {
+        server = app.listen(4000);
+        await connectDB();
     });
 
     // Shut down the server after all tests have run
-    afterAll(done => {
-        server.close(done);
+    afterAll(async () => {
+        server.close();
+        await mongoose.connection.close();
     });
 
     // Define your tests here

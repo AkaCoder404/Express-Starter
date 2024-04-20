@@ -44,6 +44,25 @@
  *               $ref: '#/components/schemas/User'
  *       500:
  *         description: Some server error
+ * 
+ * 
+ * /users/get_all_users:
+ *   get:
+ *     summary: Get all users
+ *     tags: [User]
+ *     security:
+ *      - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: The user information.
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type : array
+ *                  items:
+ *                     $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Some server error
  */
 
 const express = require('express');

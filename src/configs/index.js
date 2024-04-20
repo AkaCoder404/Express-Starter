@@ -20,10 +20,11 @@ module.exports = {
         password: process.env.MYSQL_PASSWORD,
         database: process.env.MYSQL_DATABASE,
     },
-    // mongodb: {
-    //     host: process.env.MONGODB_HOST,
-    //     user: process.env.MONGODB_USER,
-    //     password: process.env.MONGODB_PASSWORD,
-    //     database: process.env.MONGODB_DATABASE,
-    // }
+    mongo: {
+        host: process.env.MONGO_HOST,
+        database: process.env.MONGO_DATABASE,
+        username: process.env.MONGO_USER,
+        password: process.env.MONGO_PASSWORD,
+        port: process.env.MONGO_PORT,
+    },
 };

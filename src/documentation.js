@@ -25,6 +25,7 @@ const swaggerDocumentation = {
     apis: ["./src/routes/v1/*.route.js"],
     // Use http
     // schemes: ["http"],
+    
 
 };
 
