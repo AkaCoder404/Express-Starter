@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const config = require('../configs/');
 const { demoHelper } = require('../utils/helper');
+const { redisClient } = require('../database');
 
 // Models
 const User = require('../models/users.model');
@@ -30,6 +31,9 @@ const login = async (user) => {
     if (results.length > 0) {
         const equalPass = await verifyPassword(user.password, results[0].password);
         if (equalPass === true) {
+            // Redis track logins amount in the last 5 minutes
+            redisClient.incr('login_cache');
+            redisClient.expire('login_cache', 300); // 5 minutes
             // Create a token
             const token = createToken(user);
             return token;
@@ -57,7 +61,14 @@ const register = async (user) => {
     return 'Registration failed';
 }
 
+const loginCache = async () => {
+    demoHelper('loginCache');
+    const logins = await redisClient.get('login_cache');
+    return logins;
+}
+
 module.exports = {
     login,
     register,
+    loginCache
 }
